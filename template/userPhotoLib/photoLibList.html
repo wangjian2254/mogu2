@@ -1,0 +1,136 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" language="javascript">
+<!--
+var formSubmit = function(obj){
+    	var formObj = obj.parentNode;
+    	while(formObj.nodeName.toLowerCase() != "form"){
+        	formObj = formObj.parentNode;
+    	}
+    	formObj.submit();
+	}
+-->
+</script>
+<script language="javascript"><!-- 改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+
+</script>
+<script type="text/javascript" language="javascript">
+    for (i=0;i<TableNew.rows.length;i++) 
+    {
+        if(i%2==0)
+        {
+            TableNew.rows(i).className = "a1";
+        }
+        else
+        {
+            TableNew.rows(i).className = "";
+        }
+}
+</script>
+<script language="javascript">
+///通过单击行反选该行所有CheckBox
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+    var inputs=tds[j].childNodes;
+    for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+      if (inputs[i].type == "radio")
+        {
+          inputs[i].checked = !inputs[i].checked;
+          //tr.style.backgroundColor = inputs[i].checked ? "#245EDC" : ""; //改变选中行的背景色
+      }
+    }
+  }
+}
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body   style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/photoLibList">图库管理</a> 
+ >> <a href="/user_PhotoLibList">用户图库信息</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form  method="get" action="/user_PhotoLibAdd">
+<table width="90%" border="0"  cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+  <tr class="STYLE1">
+    <td align="center">图库名称:
+    <input  name="userName" type="hidden" value="{{userName}}"/>
+    <input  name="sysPhotoLib" type="hidden" value="{{sysPhotoLib}}"/>
+    <input  name="userPhotoLib" type="hidden" value="{{userPhotoLib}}"/>
+    <input  name="temPhotoLib" type="hidden" value="{{temPhotoLib}}"/>
+    <input  name="searchType" type="text" value="{{searchType}}"/>
+    <input type="submit" name="submit" value="搜索"/>
+    </td>
+  </tr>
+</table>
+</form>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+  <form method="post" action="/user_PhotoLibAdd">
+<thead  class="STYLE1">
+  <th colspan="4" style="text-align:left">当前用户:{{userName}}
+  <div style="float:right;">
+    <input name="userName" type="hidden" value="{{userName}}" >
+  定制类型:<select name="photoLibType">
+    {%for pList in photoLibTypeList%}
+    {% ifequal pList.0 '1'%}
+      <option value="1">系统图库</option>
+    {% endifequal%}
+    {% ifequal pList.0 '2'%}
+      <option value="2">用户图库</option>
+    {% endifequal%}
+    {% ifequal pList.0 '3'%}
+      <option value="3">临时图库</option>
+    {% endifequal%}
+    {%endfor%}
+    </select>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="添加"/>
+    </div></th>
+  </thead>
+  <thead class="STYLE1">
+    <th ><div  align="center">图库编号</div></th>
+    <th ><div  align="center">图库名</div></th>
+    <th ><div  align="center">更新时间</div></th>
+    <th ><div  align="center"></div></th>
+  </thead>
+  {%for pList in pLists%}
+  {% if pList.photoLibCode %}
+  <tr class="STYLE1" style="cursor:hand" onClick="SelectTR(this)">
+    <td align="center">{{pList.photoLibCode}}
+	</td>
+    <td align="center">{{pList.photoLibName}}</td>
+    <td align="center">{{pList.date|date:"Y-m-d H:i:s"}}</td>
+    <td align="center">
+    <input name="photoLibCode" type="radio" value="{{pList.photoLibCode}}">
+    </td>
+  </tr>
+  {%endif%}
+  {%endfor%}
+  </form>
+</table>
+{% endblock %}

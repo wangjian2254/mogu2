@@ -1,0 +1,110 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<!--xieyingan加的代码-->
+<script language="javascript">
+///通过单击行反选该行所有CheckBox
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+	var inputs=tds[j].childNodes;
+	for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+	  if (inputs[i].type == "radio")
+		{
+		  inputs[i].checked = !inputs[i].checked;
+		  //tr.style.backgroundColor = inputs[i].checked ? "#245EDC" : ""; //改变选中行的背景色
+	  }
+	}
+  }
+}
+</script>
+<script for = btnSubAdd event=onclick>////订阅资讯
+   var value="";
+   if(!box.length){
+   	if(box.checked){
+   	 value=box.value;
+   }}
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要,
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一打数据进行操作");
+   }else{
+   window.location.href="/userSubscribeAdd?userName=" + value;
+   }
+</script>
+<script language="javascript"><!-- 改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+
+</script>
+<!--xieyingan加的代码END-->
+ <script type="text/javascript" language="javascript">
+    for (i=0;i<TableNew.rows.length;i++) 
+    {
+        if(i%2==0)
+        {
+            TableNew.rows(i).className = "a1";
+        }
+        else
+        {
+            TableNew.rows(i).className = "";
+        }
+　　}
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body   style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/contentList/0">资讯内容管理</a> 
+ >> <a href="#">订阅资讯</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+	<tr class="STYLE1">
+		<td align="right" colspan="4">
+			<input type="button" name="btnSubAdd" value="订阅资讯"/>
+		</td>
+	</tr>
+	<tr class="STYLE1">
+	<td align="center" width="30%">用户名</td>
+	<td align="center" width="30%">真实姓名</td>
+	<td align="center" width="30%">注册时间</td>
+	<td align="center" width="10%"></td>
+	</tr>
+	{%for user in users%}
+	{%if user.userName%}
+	<tr class="STYLE1" style="cursor:hand" onClick="SelectTR(this);">
+	<td align="center">{{user.userName}}</td>
+	<td align="center">{{user.trueName}}</td>
+	<td align="center">{{user.date|date:"Y-m-d H:i:s"}}</td>
+    <td align="center"><input name="cbox" type="radio" id="box" value="{{user.userName}}" ></td>
+	</tr>
+	{%endif%}
+	{%endfor%}
+</table>
+{% endblock %}

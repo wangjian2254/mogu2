@@ -1,0 +1,259 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<!--xieyingan加进去的代码-->  
+<script language="javascript">
+///通过单击行反选该行所有CheckBox
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+	var inputs=tds[j].childNodes;
+	for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+	  if (inputs[i].type == "radio")
+	  {
+	    inputs[i].checked = !inputs[i].checked;
+	    //tr.style.backgroundColor = inputs[i].checked ? "#245EDC" : ""; //改变选中行的背景色
+	  }
+	}
+  }
+}
+</script>
+<script for = btnNext event=onclick>////下一层
+   var value="";
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要,
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+   window.location.href="/replyContentList/0?father=" + value;
+   }
+</script>
+<script for = btnExit event=onclick>////编辑
+   var value="";
+   var index="";
+   var father="";
+   if(!box.length){
+     if(box.checked){ //判断复选框是否选中
+    	value=value+box.value ; //值的拼凑 .. 具体处理看你的需要
+		index=index+rindex.value;
+		father=father+rfather.value;
+	 }
+   }
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value ; //值的拼凑 .. 具体处理看你的需要
+		index=index+rindex[i].value;
+		father=father+rfather[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+   		window.location.href="/contentUpdate?contentCode="+value+"&page_id="+index+"&father="+father;
+   }
+</script>
+<script for = btnDel event=onclick>////删除
+   var value="";
+   var index="";
+   var father="";
+   if(!box.length){
+     if(box.checked){ //判断复选框是否选中
+    	value=value+box.value ; //值的拼凑 .. 具体处理看你的需要
+		index=index+rindex.value;
+		father=father+rfather.value;
+	 }
+   }
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要
+		index=index+rindex[i].value;
+		father=father+rfather[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+	   if(window.confirm("你确认要删除吗？"))
+	   window.location.href="/replyContentDelete?replyContentCode="+value+"&page_id="+index+"&father="+father;
+   }					
+</script>
+
+<script language="javascript"> <!--改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+
+</script>
+<!--xieyingan加进去的代码END-->
+
+<script type="text/javascript" language="javascript">
+<!--
+function doCheking(obj,number){
+	var table = document.getElementById("contentList");
+	var trObj = getRowObj(obj); 
+	var trNo = getRowNo(obj);
+	var trArr = getAllRowNo(obj);
+	var currentValue = table.rows[trNo-1].cells[1].innerHTML;
+	if (number==1){
+		if((trNo-1)==1){
+			var textValue='';
+		}else{
+			var textValue = table.rows[trNo-2].cells[1].innerHTML;
+		}
+	}
+	if (number==2){
+		if ((trNo-1)==0){
+			textValue = '';
+			if(trArr==trNo){
+				var currentValue = '';
+			}else{
+				var currentValue = table.rows[trNo].cells[1].innerHTML;
+			}
+		}
+		else{
+			var textValue = currentValue;
+			if (trArr==trNo){
+				currentValue = '';
+			}else{
+				currentValue=table.rows[trNo].cells[1].innerHTML;
+			}
+		}
+	}
+	//alert(textValue);
+	//alert(currentValue);
+	document.getElementById("hidden1").value = textValue;
+	document.getElementById("hidden2").value = currentValue;
+}
+
+function getRowNo(obj){
+   	var trObj = getRowObj(obj); 
+   	var trArr = trObj.parentNode.children;
+ 	for(var trNo= 0; trNo < trArr.length; trNo++){
+  		if(trObj == trObj.parentNode.children[trNo]){
+    		return (trNo+1);
+  		}
+ 	}
+}
+
+function getAllRowNo(obj){
+	var trObj = getRowObj(obj); 
+   	var trArr = trObj.parentNode.children;
+	return trArr.length;
+}
+
+function getRowObj(obj)
+{
+   var i = 0;
+   while(obj.tagName.toLowerCase() != "tr"){
+    obj = obj.parentNode;
+    if(obj.tagName.toLowerCase() == "table")
+  		return null;
+   }
+   return obj;
+}
+
+function aaa()
+{
+	var table = document.getElementById("contentList");
+	var trNo = table.rows.length;
+	for (i=1;i<table.rows.length;i++){
+		var str = table.rows[i].cells[2].innerHTML;
+		var cd=str.length;
+		if(cd>15){
+			table.rows[i].cells[2].innerHTML=str.substring(0,15)+"...";
+		}
+	}
+}
+-->
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body onLoad="aaa();"  style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a href="/replyContentList/0?father=">特殊资讯目录</a>
+{% for fList in fatherList%}
+{% if fList.code%}
+ >> <a href="/replyContentList/0?father={{fList.code}}">{{fList.code}}</a>
+{%endif%}
+{% endfor%}
+ >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+
+<form  method="post" action="/replyContentList/{{index}}">
+<table id="contentList" width="90%"   border="0" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6" >
+<tr class="STYLE1">
+	<td align="right" colspan="9">
+		<input type="hidden" id="hidden" name="hidden" value="{{father}}">
+  <input type="hidden"  name="prevcode" value="{% if prev%}{{prev}}{%endif%}">
+<input type="hidden"  name="nextcode" value="{% if next%}{{next}}{%endif%}">
+  <input type="hidden" id="prevValue" name="prevValue" value="{{prevValue}}">
+  <input type="submit" name="do" value="插入"  />
+  <input type="submit" name="do" value="添加"  />
+  <input type="button" name="btnExit" value="编 辑"/>
+  <input type="button" name="btnDel" value="删 除"/>
+  <input type="button" name="Return" value="返回" onClick="javascript:history.back(-1);" />
+	</td>
+<tr class="STYLE1">
+<td align="center"><strong>主编号</strong></td>
+<td align="center"><strong>特殊节点号</strong></td>
+<td align="center"><strong>内容</strong></td>
+<td align="center"><strong>父类</strong></td>
+<td align="center"><strong>资讯等级</strong></td>
+<td align="center"><strong>回复类型</strong></td>
+<td align="center"><strong>状态</strong></td>
+<td align="center"><strong>更新时间</strong></td>
+<td></td>
+</tr>
+{%for replyContent in replyContents%}
+{% if replyContent.code %}
+<tr class="STYLE1" style="cursor:hand" onClick="SelectTR(this);" onMouseOver="cells_color();" onMouseOut="cells_color();">
+<td align="center">{{replyContent.maincode}}</td>
+<td align="center"><a href="/replyContentList/0?father={{replyContent.code}}">{{replyContent.code}}</a></td>
+<td>{{replyContent.content}}</td>
+<td align="center">{{replyContent.father}}</td>
+<td align="center">{{replyContent.level}}</td>
+<td align="center">{{replyContent.replyType}}</td>
+<td align="center">{{replyContent.status}}</td>
+<td align="center">{{replyContent.lastUpdateTime|date:"Y-m-d H:i:s"}}</td>
+<td><input name="cbox" type="radio" id="box"  value="{{replyContent.code}}" >  
+ <input name="prev" style="visibility:hidden; display:none" type="radio"  value="{{replyContent.prev}}" >
+  <input name="code" style="visibility:hidden; display:none" type="radio"  value="{{replyContent.code}}" >
+  <input name="next" style="visibility:hidden; display:none" type="radio"  value="{{replyContent.next}}" >
+	<input name="radio" style="visibility:hidden; display:none" type="radio" id="rindex" value="{{index}}" >
+    <input name="radio" style="visibility:hidden; display:none" type="radio" id="rfather" value="{{father}}" ></td>
+</tr>
+{%endif%}
+{%endfor%}
+<tr bgcolor="#ffffff"  height="25">
+	<td colspan="9" align="right" >
+		{% if prevpage %}<a href="/replyContentList{{prevpage}}?father={{father}}">上一页</a>{% endif%}  {%if nextpage%}<a id="link2" href="/replyContentList{{nextpage}}?father={{father}}">下一页</a>{% endif %}   {%if lastpage%}<a id="link2" href="/replyContentList/{{lastpage}}?father={{father}}">最后一页</a>{% endif %}
+	</td>
+</tr>
+</table>
+</form>
+{% endblock %}

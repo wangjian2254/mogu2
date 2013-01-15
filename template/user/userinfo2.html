@@ -1,0 +1,150 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<!--xieyingan加进去的代码-->  
+<script language="javascript">
+///通过单击行反选该行所有CheckBox
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+	var inputs=tds[j].childNodes;
+	for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+	  if (inputs[i].type == "radio")
+	  {
+	    inputs[i].checked = !inputs[i].checked;
+	    //tr.style.backgroundColor = inputs[i].checked ? "#245EDC" : ""; //改变选中行的背景色
+	  }
+	}
+  }
+}
+
+function btnUpPass_click(){
+ var box=document.getElementsByName('box');
+ var rindex=document.getElementsByName('rindex');
+ var rfather=document.getElementsByName('rfather');
+   var value="";
+   var index="";
+   if(!box.length){
+   	if(box.checked){
+   		value=box.value; //值的拼凑 .. 具体处理看你的需要
+		index=rindex.value;
+   }}
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要,
+		index=index+rindex[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+   	window.location.href="/userPassWordUpdate?userName=" + value + "&index=" + index;
+   }
+}
+
+function btnUpdate_click(){
+ var box=document.getElementsByName('box');
+ var rindex=document.getElementsByName('rindex');
+ var rfather=document.getElementsByName('rfather');
+   var value="";
+   var index="";
+   if(!box.length){
+   	if(box.checked){
+   		value=box.value; //值的拼凑 .. 具体处理看你的需要
+		index=rindex.value;
+   }}
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要,
+		index=index+rindex[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+   	window.location.href="/userUpdate?userName="+value+"&index="+index;
+   }
+}
+function btnDel_click(){
+ var box=document.getElementsByName('box');
+ var rindex=document.getElementsByName('rindex');
+ var rfather=document.getElementsByName('rfather');
+   var value="";
+   var index="";
+   if(!box.length){
+   	if(box.checked){
+   		value=box.value; //值的拼凑 .. 具体处理看你的需要
+		index=rindex.value;
+   }}
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要
+		index=index+rindex[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+	if(window.confirm("你确认要删除吗？"))
+   	window.location.href="/userDelete?userName="+value+"&index="+index;
+   }
+}
+</script>
+<!--xieyingan加进去的代码END-->
+
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+    background-color: #ffffff;
+
+}
+</style>
+{% endblock %}
+{% block body %}
+<body   style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/userInfo">用户信息列表</a> >><a  href="/userAdd">添加新用户</a> >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form  method="post" action="/userList/0">
+<table align="center" width="90%" height="100%" border="0"  cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+  <tr align="center">
+    <td>用户名:
+	  <input  name="searchType" type="text"/>
+      <input type="submit" name="search" value="搜索"/>
+	</td>
+  </tr>
+</table>
+</form>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"   >
+	<tr class="STYLE1">
+		<td colspan="7" align="right">
+	<!--<input type="button" name="btnUpPass" value="密码修改" onclick="btnUpPass_click()"/>-->
+	<input type="button" name="btnUpdate" value="编 辑" onclick="btnUpdate_click()" />
+	<input type="button" name="btnDel" value="删 除" onclick="btnDel_click()"/>
+		</td>
+	<tr  class="STYLE1">
+		<td align="center">用户名</td>
+        <td align="center">密码</td>
+		<td align="center">真实姓名</td>
+		<td align="center">固定电话</td>
+		<td align="center">移动电话</td>
+		<td align="center">日期</td>
+		<td></td>
+	</tr>
+	{% for greeting in greetings %}
+	<tr  style="cursor:hand"  onClick="SelectTR(this);"  onmouseover="cells_color(this,1);" onMouseOut="cells_color(this,2);" bgcolor="#ffffff">
+		<td align="center">{{ greeting.userName|escape}}&nbsp;</td>
+		<td align="center">{{ greeting.passWord|escape}}&nbsp;</td>
+		<td align="center">{{ greeting.trueName|escape}}&nbsp;</td>
+		<td align="center">{{ greeting.tele|escape}}&nbsp;</td>
+		<td align="center">{{ greeting.mobile|escape}}&nbsp;</td>
+		<td align="center">{{ greeting.date}}&nbsp;</td>
+        <td align="center"><input  type="radio" name="box"  value="{{greeting.userName|escape}}" ><input  style="visibility:hidden; display:none" type="radio" name="rindex" value="{{index}}" ></td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" language="javascript">
+<!--
+	function checkTrue(){
+		//验证用户名
+		var userName = trim(document.getElementById("username").value);
+		if (userName==null || userName ==""){
+			alert("用户名不能为空!");
+			document.getElementById("register").method = "get";
+		}
+		else if (!isLength(userName)){
+			alert("用户名长度不足!");
+			document.getElementById("register").method = "get";
+		}
+		else if (!isRegisterUserName(userName)){
+			alert('用户名不合法');
+			document.getElementById("register").method = "get";
+		}
+		
+		//验证密码
+		var password = trim(document.getElementById("password").value);
+		//var repassword = trim(document.getElementById("repassword").value);
+		
+		if (password==null || password ==""){
+			alert("密码不能为空!");
+			document.getElementById("register").method = "get";
+		}
+		else if(!isPasswd(password)){
+			alert('密码不合法');
+			document.getElementById("register").method = "get";
+		}
+		//固定电话
+		if(document.getElementById("Text_Mobile").value!="")
+	 	{
+			 var tel = /^[0-9]{0,20}$/;
+			 var mob = document.getElementById("Text_Mobile").value;
+			 if(!mob.match(tel))
+			 {
+				 alert("请输入正确有效的固定电话！");
+				 document.getElementById("register").method = "get";
+			 }		 
+	 	} 
+		
+		//移动电话
+		if(document.getElementById("Text_MobilePhone").value!="")
+		 {
+			 var reg =/^[0-9]{0,20}$/;
+			 var mob = document.getElementById("Text_MobilePhone").value;
+			 if(!mob.match(reg))
+			 {
+				 alert("请输入正确有效的移动电话！");
+				 document.getElementById("register").method = "get";
+			 }		 
+		 } 
+	}
+	function trim(str){
+		return str.replace(/(^s*)|(s*$)/g,"");
+	}
+	
+	function isRegisterUserName(str){
+		var reg=/[a-zA-Z0-9]{1}([a-zA-Z0-9]|[._]){0,19}$/; 
+		return reg.test(str);
+	}
+	
+	function isLength(str){
+		if (str.length>=1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	function isPasswd(s){   
+		var patrn=/^(\w){1,20}$/;   
+		if (!patrn.exec(s)) 
+			return false  
+		return true  
+	} 
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body onLoad="aaa();"  style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/userInfo">用户信息列表</a> >><a  href="/userAdd">添加新用户</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form id="register"  method="post" action="/userAdd" onSubmit="checkTrue()">
+<table align="center" width="90%" border="0" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6" >
+  <tr class="STYLE1">
+    <td width="30%"><div align="right">用 &nbsp;&nbsp; 户：</div></td>
+    <td width="70%"><label accesskey="username">
+      <input type="text" name="username" maxlength="20">
+    </label>
+    (*只能输入1-20个以字母或者数字开头的任意字串)</td>
+  </tr>
+  <tr class="STYLE1">
+    <td><div align="right">登录密码：</div></td>
+    <td><input type="text" name="password" maxlength="20">
+    (*只能输入1-20个字母、数字、下划线 )</td>
+  </tr>
+  <tr class="STYLE1">
+    <td><div align="right">真实姓名：</div></td>
+    <td><input type="text" name="truename" maxlength="20"></td>
+  </tr>
+  <tr class="STYLE1">
+    <td><div align="right">固定电话：</div></td>
+    <td><input type="text" name="telephone" id="Text_Mobile" maxlength="20"></td>
+  </tr>
+  <tr class="STYLE1">
+    <td><div align="right">移动电话：</div></td>
+    <td><input type="text" name="mobile" id="Text_MobilePhone" maxlength="20"></td>
+  </tr>
+  <tr class="STYLE1">
+    <td colspan="2" align="center"><input name="Submit" type="submit" value="确定"/>
+	<input name="return" type="button" value="返回" onClick="javascript:history.back(-1);" />    </td>
+    </tr>
+  </table>
+  
+</form>
+{% endblock %}

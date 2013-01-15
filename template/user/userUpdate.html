@@ -1,0 +1,48 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body onLoad="aaa();"  style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/userInfo">用户信息列表</a> >><a  href="/userAdd">添加新用户</a> >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form id="register"  method="post" action="/userUpdate">
+<table align="center" width="90%" border="0" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6" >
+  <tr class="STYLE1">
+    <td width="30%"><div align="right">用 &nbsp;&nbsp; 户：</div></td>
+	{% if user.userName %}
+    <td width="70%"><label accesskey="username">
+      <input type="text" name="username" value="{{user.userName|escape}}" readonly="yes"><font color="#FF0000">(*不能修改)</font>
+    </label>    </td>
+	{%endif%}
+  </tr>
+  <tr class="STYLE1">
+    <td><div align="right">真实姓名：</div></td>
+    <td><input type="text" name="truename" value="{{user.trueName|escape}}"  maxlength="20"></td>
+  </tr>
+  <tr class="STYLE1">
+    <td><div align="right">固定电话：</div></td>
+    <td><input type="text" name="telephone" value="{{user.tele|escape}}"  maxlength="20"></td>
+  </tr>
+  <tr class="STYLE1">
+    <td><div align="right">移动电话：</div></td>
+    <td><input type="text" name="mobile" value="{{user.mobile|escape}}"  maxlength="20"></td>
+  </tr>
+  <tr class="STYLE1">
+    <td colspan="2" align="center"><input type="hidden" name="index" value="{{index}}">
+	<input name="Submit" type="submit" value="确定"/>
+	<input name="return" type="button" value="返回" onClick="javascript:history.back(-1);" />    </td>
+    </tr>
+  </table>
+</form>
+
+{% endblock %}

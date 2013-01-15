@@ -1,0 +1,120 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" language="javascript">
+<!--
+var formSubmit = function(obj){
+    	var formObj = obj.parentNode;
+    	while(formObj.nodeName.toLowerCase() != "form"){
+        	formObj = formObj.parentNode;
+    	}
+    	formObj.submit();
+	}
+-->
+</script>
+<script language="javascript"><!-- 改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body   style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/photoLibList">图库管理</a> 
+ >> <a href="/user_PhotoLibList">用户图库信息</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<table width="90%" border="0"  cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+  <tr>
+  <td colspan="5" style="text-align:left">当前用户:{{userName}}</td>
+  </tr>
+</table>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >  <thead class="STYLE1">
+  <th colspan="5"><h3>系统图库</h3></th>
+  </thead>
+  <thead class="STYLE1">
+    <th width="25%"><div  align="center">图片编号</div></th>
+    <th width="25%"><div  align="center">图片名</div></th>
+	<th width="20%"><div  align="center">图片类型</div></th>
+    <!--<th width="15%">查看</th>-->
+  </thead>
+  {%for user_PhotoLib_Photo in user_PhotoLib_Photos.0%}
+  {%for image in user_PhotoLib_Photo%}
+  {%if image.photoCode %}
+   <tr class="STYLE1" style="cursor:hand" onClick="window.location.href='/show/{{image.photoCode}}'">
+    <td align="center">{{image.photoCode}}</td>
+    <td align="center">{{image.name}}</td>
+    <td align="center">{{image.filetype}}</td>
+    <!--<td><a href="/show/{{image.photoCode}}">查看</a></td>-->
+  </tr>
+  {%endif%}
+  {%endfor%}
+  {%endfor%}
+</table>
+</p>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >  <thead  class="STYLE1">
+  <th colspan="5"><h3>用户图库</h3></th>
+  </thead>
+  <thead  class="STYLE1">
+    <th width="25%"><div  align="center">图片编号</div></th>
+    <th width="25%"><div  align="center">图片名</div></th>
+	<th width="20%"><div  align="center">图片类型</div></th>
+    <!--<th width="15%">查看</th>-->
+  </thead>
+  {%for user_PhotoLib_Photo in user_PhotoLib_Photos.1%}
+  {%for image in user_PhotoLib_Photo%}
+  {%if image.photoCode %}
+   <tr class="STYLE1" style="cursor:hand" onClick="window.location.href='/show/{{image.photoCode}}'">
+    <td align="center">{{image.photoCode}}</td>
+    <td align="center">{{image.name}}</td>
+    <td align="center">{{image.filetype}}</td>
+    <!--<td><a href="/show/{{image.photoCode}}">查看</a></td>-->
+  </tr>
+  {%endif%}
+  {%endfor%}
+  {%endfor%}
+</table>
+</p>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >  <thead  class="STYLE1">
+  <th colspan="5"><h3>临时图库</h3></th>
+  </thead>
+  <thead  class="STYLE1">
+   <th width="25%"><div  align="center">图片编号</div></th>
+    <th width="25%"><div  align="center">图片名</div></th>
+	<th width="20%"><div  align="center">图片类型</div></th>
+    <!--<th width="15%">查看</th>-->
+  </thead>
+  {%for user_PhotoLib_Photo in user_PhotoLib_Photos.2%}
+  {%for image in user_PhotoLib_Photo%}
+  {%if image.photoCode %}
+   <tr class="STYLE1" style="cursor:hand" onClick="window.location.href='/show/{{image.photoCode}}'" >
+    <td align="center">{{image.photoCode}}</td>
+    <td align="center">{{image.name}}</td>
+    <td align="center">{{image.filetype}}</td>
+    <!--<td><a href="/show/{{image.photoCode}}">查看</a></td>-->
+  </tr>
+  {%endif%}
+  {%endfor%}
+  {%endfor%}
+</table>
+{% endblock %}

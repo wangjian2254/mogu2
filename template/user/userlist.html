@@ -1,0 +1,23 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+
+{% endblock %}
+{% block body %}
+<body   style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/userAdd">添加新用户</a> 
+{% endblock %}
+{% block content %}
+<form  method="post" action="/userList/0">
+<table align="center" width="90%" height="100%" border="0"  cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+  <tr align="center">
+    <td>用户名:
+	  <input  name="searchType" type="text"/>
+      <input type="submit" name="search" value="搜索"/>
+	</td>
+  </tr>
+</table>
+	<iframe src="/userList/0?searchType={{searchType}}" height="350" width="100%" frameborder="0" scrolling="auto"></iframe>
+</form>
+{% endblock %}

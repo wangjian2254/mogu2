@@ -1,0 +1,126 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<!--xieyingan加的代码-->
+<script language="javascript">
+///通过单击行反选该行所有CheckBox
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+	var inputs=tds[j].childNodes;
+	for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+	  if (inputs[i].type == "radio")
+		{
+		  inputs[i].checked = !inputs[i].checked;
+		  //tr.style.backgroundColor = inputs[i].checked ? "#245EDC" : ""; //改变选中行的背景色
+	  }
+	}
+  }
+}
+
+function btnDel_click(){
+ var box=document.getElementsByName('box');
+ var codes=document.getElementsByName('code');
+ var rfather=document.getElementsByName('rfather');
+   var value="";
+   var code="";
+   if(!box.length){
+    	value=value+box.value; //值的拼凑 .. 具体处理看你的需要
+		code=codes.value;
+   }
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要
+		code=codes[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+	if(window.confirm("你确认要删除吗？"))
+   	window.location.href="/subscribeDelete?userName="+value+"&code="+code;
+   }
+}
+</script>
+<!--xieyingan加的代码END-->
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body    style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/contentList/0">资讯内容管理</a> 
+ >> <a href="#">用户订阅信息</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+
+<form  method="post" action="/subscribeInfo">
+<table align="center" width="90%" border="0"  cellpadding="0" cellspacing="0" >
+  <tr align="center">
+    <td>用户名:
+	<input  name="searchType" type="text" value="{{searchType}}"/>
+    <input type="submit" name="search" value="搜索"/>
+	</td>
+  </tr>
+</table>
+</form>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+	<tr class="STYLE1">
+		<td align="right" colspan="8">
+{%if searchType%}
+<input type="button" value="添加订阅" onclick="javascript:window.location.href='/userSubscribeAdd?userName={{searchType}}&father={{father}}'"/>
+{%endif%}
+<input type="button" name="btnDel" value="删 除" onclick="btnDel_click()"/>	</td>
+	</tr>
+	<tr class="STYLE1">
+		<td align="center" width="70px"><a href="/subscribeList/0?searchType=userName">用户</a></td>
+        <td align="center" width="70px">资讯编号</td>
+		<td align="center" width="70px">订阅类型</td>
+		<td align="center" width="90px">订阅改变时间</td>
+		<td align="center" width="70px">订阅状态</td>
+		<td align="center" width="70px">订阅操作</td>
+		<td align="center" width="30px"></td>
+	</tr>
+	{% for subscribe in subscribes%}
+    <tr  style="cursor:hand" onClick="SelectTR(this);"  onmouseover="cells_color(this,1);" onMouseOut="cells_color(this,2);" bgcolor="#ffffff" >
+		<td align="center">{{subscribe.userName}}</td>
+        <td align="center">
+        {%if subscribe.subscribeType == '0'%}
+        {{subscribe.code}}
+        {%else%}
+        <a href="/subscribeList/0?userName={{subscribe.userName}}&father={{subscribe.code}}&level={{subscribe.level}}&subscribeType={{subscribe.subscribeType}}">{{subscribe.code}}</a>
+        {%endif%}
+        </td>
+        {%if subscribe.subscribeType == '0'%}
+		<td align="center">全要</td>
+		{%else%}
+		<td align="center">只要本层</td>
+		{%endif%}
+		<td align="center">{{subscribe.lastUpdateTime}}</td>
+		{%if subscribe.status == '1'%}
+		<td align="center">订阅</td>
+		<td align="center"><a href="/subscribeStatus?userName={{subscribe.userName}}&code={{subscribe.code}}">取消</a></td>
+		{%else%}
+		<td align="center">已取消</td>
+		<td align="center"><a href="/subscribeStatus?userName={{subscribe.userName}}&code={{subscribe.code}}">订阅</a></td>
+		{%endif%}
+        <td align="center">
+          <input  style="visibility:hidden; display:none" type="radio" name="box" value="{{subscribe.userName}}" >
+		  <input  style="visibility:hidden; display:none" type="radio" name="code" value="{{subscribe.code}}" >
+		  <input   type="radio" name="subtype" value="{{subscribe.subscribeType}}" ></td>
+	</tr>
+	{%endfor%}
+    <tr bgcolor="#ffffff"  height="25">
+	<td colspan="7" align="right" >
+		{% if prevpage %}<a href="/subscribeList{{prevpage}}?father={{father}}">上一页</a>{% endif%}  {%if nextpage%}<a id="link2" href="/subscribeList{{nextpage}}?father={{father}}">下一页</a>{% endif %} {%if lastpage%}<a id="link2" href="/subscribeList/{{lastpage}}?father={{father}}">最后一页</a>{% endif %}
+	</td>
+</tr>
+</table>
+{% endblock %}

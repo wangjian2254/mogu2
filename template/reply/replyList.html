@@ -1,0 +1,203 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" language="javascript">
+<!--
+var formSubmit = function(obj){
+    	var formObj = obj.parentNode;
+    	while(formObj.nodeName.toLowerCase() != "form"){
+        	formObj = formObj.parentNode;
+    	}
+    	formObj.submit();
+	}
+
+function aaa()
+{
+	var table = document.getElementById("TableNew");
+	var trNo = table.rows.length;
+	for (i=1;i<table.rows.length;i++){
+		var str = table.rows[i].cells[3].innerHTML;
+		var cd=str.length;
+		if(cd>15){
+			table.rows[i].cells[3].innerHTML=str.substring(0,15)+"...";
+		}
+	}
+}
+-->
+</script>
+<!--xieyingan加的代码-->
+<script language="javascript">
+///通过单击行反选该行所有CheckBox
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+	var inputs=tds[j].childNodes;
+	for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+	  if (inputs[i].type == "radio")
+		{
+		  inputs[i].checked = !inputs[i].checked;
+		  //tr.style.backgroundColor = inputs[i].checked ? "#245EDC" : ""; //改变选中行的背景色
+	  }
+	}
+  }
+}
+</script>
+<script for = btnUpdate event=onclick>////编辑
+   var value="";
+   var index="";
+   var code="";
+   if(!box.length){
+   	if(box.checked){
+    	value=value+box.value ; //值的拼凑 .. 具体处理看你的需
+		index=index+rindex.value;
+		code=code+rcode.value;
+	}
+   }
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value ; //值的拼凑 .. 具体处理看你的需
+		index=index+rindex[i].value;
+		code=code+rcode[i].value;
+	 }
+   }
+	if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+   window.location.href="/userReplyUpdate?userName="+value+"&id="+code+"&index="+index;
+   }
+</script>
+<script for = btnDelete event=onclick>////删除
+   var value="";
+   var index="";
+   var code="";
+   if(!box.length){
+   	if(box.checked){
+    	value=value+box.value ; //值的拼凑 .. 具体处理看你的需
+		index=index+rindex.value;
+		code=code+rcode.value;
+	}
+   }
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+value+box[i].value; //值的拼凑 .. 具体处理看你的需要
+		index=index+rindex[i].value;
+		code=code+rcode[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+	if(window.confirm("你确认要删除吗？"))
+   	window.location.href="/userReplyDelete?userName="+value+"&id="+code+"&index="+index;
+   }
+</script>
+<script language="javascript"><!-- 改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+
+</script>
+<!--xieyingan加的代码END-->
+<script type="text/javascript" language="javascript">
+    for (i=0;i<TableNew.rows.length;i++) 
+    {
+        if(i%2==0)
+        {
+            TableNew.rows(i).className = "a1";
+        }
+        else
+        {
+            TableNew.rows(i).className = "";
+        }
+}
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body  onLoad="aaa();"  style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/userReplyList/0">客户端返回信息管理</a> 
+ >> <a href="/userReplyList/0">回复信息表</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form  method="post" action="/userReplyList/0">
+<table  width="90%" border="0"  cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+  <tr class="STYLE1">
+    <td align="center">用户名:
+	<input  name="searchType" type="text"/>
+	<input type="submit" name="submit" value="搜索"/></td>
+  </tr>
+</table>
+</form>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+	 <tr  class="STYLE1">
+ 	<td colspan="7" align="right" >
+ 		<input type="button" name="btnUpdate" value="编辑"/>
+<input type="button" name="btnDelete" value="删除"/>
+ 	</td>
+ 	</tr>
+  <tr  class="STYLE1">
+  	<td align="center">用户名</td>
+  	<td align="center">主编号</td>
+  	<td align="center">内容编号</td>
+  	<td align="center">内容</td>
+  	<td align="center">回复类型</td>
+  	<td align="center">回复时间</td>
+  	<td align="center"></td>
+  </tr>
+  {%for reply in replys%}
+  {%if reply.userName%}
+  <tr class="STYLE1" style="cursor:hand" onClick="SelectTR(this)">
+  	<td align="center">{{reply.userName}}</td>
+  	<td align="center">{{reply.maincode}}</td>
+  	<td align="center">{{reply.code}}</td>
+  	<td align="center">{{reply.replyContent}}</td>
+	{%ifequal reply.replyType '1'%}
+  	<td align="center">单选项</td>
+	{%endifequal%}
+	{%ifequal reply.replyType '2'%}
+  	<td align="center">多选项</td>
+	{%endifequal%}
+	{%ifequal reply.replyType '3'%}
+  	<td align="center">图文显示</td>
+	{%endifequal%}
+    {%ifequal reply.replyType '4'%}
+  	<td align="center">文本回复</td>
+	{%endifequal%}
+  	<td align="center">{{reply.replyTime|date:"Y-m-d H:i:s"}}</td>
+    <td align="center">
+    	<input name="radio" type="radio" id="rcode" value="{{reply.key.id}}" style="visibility:hidden; display:none">
+        <input name="radio1" type="radio" id="rindex" value="{{index}}" style="visibility:hidden; display:none">
+        <input name="radio2" type="radio" id="box" value="{{reply.userName}}" >
+    </td>
+  </tr>
+  {%endif%}
+  {%endfor%}
+  <tr  class="STYLE1">
+  	<td align="center" colspan="7">
+  		<h5 id="page">{% if prev %}<a href="/userReplyList{{prev}}">上一页</a>{% endif%}  {%if next%}<a href="/userReplyList{{next}}">下一页</a>
+{% endif %}</h5>
+  	</td>
+  </tr>
+</table>
+{% endblock %}

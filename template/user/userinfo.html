@@ -1,0 +1,137 @@
+<html>
+<head>
+<!--xieyingan加进去的代码-->  
+<script language="javascript">
+///通过单击行反选该行所有CheckBox
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+	var inputs=tds[j].childNodes;
+	for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+	  if (inputs[i].type == "radio")
+	  {
+	    inputs[i].checked = !inputs[i].checked;
+	    //tr.style.backgroundColor = inputs[i].checked ? "#245EDC" : ""; //改变选中行的背景色
+	  }
+	}
+  }
+}
+</script>
+<script for = btnUpPass event=onclick>////密码修改
+   var value="";
+   var index="";
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要,
+		index=index+rindex[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+   	window.location.href="/userPassWordUpdate?userName=" + value + "&index=" + index;
+   }
+</script>
+<script for = btnUpdate event=onclick>////编辑
+   var value="";
+   var index="";
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要,
+		index=index+rindex[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+   	window.location.href="/userUpdate?userName="+value+"&index="+index;
+   }
+</script>
+<script for = btnDel event=onclick>////删除
+   var value="";
+   var index="";
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要
+		index=index+rindex[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+	if(window.confirm("你确认要删除吗？"))
+   	window.location.href="/userDelete?userName="+value+"&index="+index;
+   }
+</script>
+<script language="javascript"> <!--改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+
+</script>
+<!--xieyingan加进去的代码END-->
+<script type="text/javascript" language="javascript">
+    for (i=0;i<TableNew.rows.length;i++) 
+    {
+        if(i%2==0)
+        {
+            TableNew.rows(i).className = "a1";
+        }
+        else
+        {
+            TableNew.rows(i).className = "";
+        }
+}
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+<body  style="background:#ffffff">
+
+<table id="TableNew" border="0" width="100%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color()" onMouseOut="cells_color()" >
+	<tr>
+		<td colspan="6" align="right">
+	<input type="button" name="btnUpPass" value="密码修改"/>
+	<input type="button" name="btnUpdate" value="编 辑"/>
+	<input type="button" name="btnDel" value="删 除"/>
+		</td>
+	<tr>
+		<td>用户名</td>
+        <td>密码</td>
+		<td>真实姓名</td>
+		<td>固定电话</td>
+		<td>移动电话</td>
+		<td>日期</td>
+	</tr>
+	{% for greeting in greetings %}
+	<tr class="STYLE1" style="cursor:hand" onClick="SelectTR(this)">
+		<td>{{ greeting.userName|escape}}&nbsp;</td>
+		<td>{{ greeting.passWord|escape}}&nbsp;</td>
+		<td>{{ greeting.trueName|escape}}&nbsp;</td>
+		<td>{{ greeting.tele|escape}}&nbsp;</td>
+		<td>{{ greeting.mobile|escape}}&nbsp;</td>
+		<td>{{ greeting.date|date:"Y-m-d H:i:s"}}&nbsp;</td>
+        <td><input name="cbox" type="radio" id="box"  value="{{greeting.userName|escape}}" ><input name="radio" style="visibility:hidden; display:none" type="radio" id="rindex" value="{{index}}" ></td>
+	</tr>
+	{% endfor %}
+</table>
+</body>
+</html>

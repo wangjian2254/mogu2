@@ -1,0 +1,144 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<!--xieyingan加的代码-->
+<script language="javascript">
+///通过单击行反选该行所有CheckBox
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+	var inputs=tds[j].childNodes;
+	for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+	  if (inputs[i].type == "radio")
+		{
+		  inputs[i].checked = !inputs[i].checked;
+		  //tr.style.backgroundColor = inputs[i].checked ? "#245EDC" : ""; //改变选中行的背景色
+	  }
+	}
+  }
+}
+</script>
+<script for = btnExit event=onclick>////编辑
+   var value="";
+   if(!box.length){
+     if(box.checked){ //判断复选框是否选中
+    	value=value+box.value; //值的拼凑 .. 具体处理看你的需要,
+	 }
+	}
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value ; //值的拼凑 .. 具体处理看你的需要
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+   window.location.href="/photoLib_PhotoUpdate?indexNo=" + value;
+}
+</script>
+<script for = btnDel event=onclick>////删除
+   var value="";
+   var photoLibCode = "";
+   if(!box.length){
+     if(box.checked){ //判断复选框是否选中
+    	value=value+box.value; //值的拼凑 .. 具体处理看你的需要,
+		photoLibCode=photoLibCode+code.value;
+	 }
+	}
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要
+		photoLibCode=photoLibCode+code[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+	   if(window.confirm("你确认要删除吗？"))
+	   window.location.href="/photoLib_PhotoDelete?indexNo=" + value + "&photoLibCode=" + photoLibCode;
+   }
+</script>
+<script language="javascript"><!-- 改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+function addPhoto(){
+    window.location.href="/addPhotoToLib?photoLibCode={{photoLibCode}}&photoLibName={{photoLibName}}";
+    }
+</script>
+<!--xieyingan加的代码END-->
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body   style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/photoLibList">图库管理</a> 
+ >> <a href="/photoLibAdd">添加图片库</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+<tr class="STYLE1">
+		<td colspan="7" align="right"><div style="float:left;margin-top:3px;margin-left:10px;">图片库编号:{{photoLibCode}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;图片库名称:{{photoLibName}}</div>
+			<input type="button"  value="添加图片" onclick="addPhoto();"/>
+			<input type="button" name="btnExit" value="编 辑"/>
+  <input type="button" name="btnDel" value="删 除" />
+  <input type="button" name="Return" value="返回" onClick="javascript:history.back(-1);" /> 
+		</td>
+	</tr>
+<tr class="STYLE1">
+		<td align="center">索引号</td>
+        <td align="center">图片编号</td>
+		<td align="center">图片名</td>
+		<td align="center">缩略图</td>
+		<td align="center">图片状态</td>
+		<td align="center">上次更新时间</td>
+		<td ></td>
+		<!--<th>删除</th>
+        <th>编辑</th>-->
+	</tr>
+	{% for photoLib_Photo in photoLib_Photos %}
+	{% if photoLib_Photo.photoLibCode %}
+	<tr class="STYLE1" style="cursor:hand" onClick="SelectTR(this)" >
+		<td align="center">{{photoLib_Photo.indexNo}}</td>
+		<td align="center">{{photoLib_Photo.photoCode}}</td>
+		<td align="center">{{photoLib_Photo.imageName}}</td>
+		<td align="center"><img src="/images/{{ photoLib_Photo.photoCode}}" width="50" height="30" alt="{{ photoLib_Photo.imageName}}" /></td>
+		<td align="center">
+        {%ifequal photoLib_Photo.status '0'%}
+		已删除
+		{%endifequal%}
+		{%ifequal photoLib_Photo.status '1'%}
+		增加
+		{%endifequal%}
+        </td>
+		<td align="center">{{photoLib_Photo.lastUpdateTime|date:"Y-m-d H:i:s"}}</td>
+		<!--<td><a href="/photoLib_PhotoDelete?indexNo={{photoLib_Photo.indexNo}}&photoLibCode={{photoLib_Photo.photoLibCode}}">删除</a></td>
+        <td><a href="/photoLib_PhotoUpdate?indexNo={{photoLib_Photo.indexNo}}">编辑</a></td>-->
+        <td align="center"><input name="cbox" type="radio" id="box" value="{{photoLib_Photo.indexNo}}" >
+        	<input name="radio" style="visibility:hidden; display:none" type="radio" id="code" value="{{photoLib_Photo.photoLibCode}}" >
+        </td>
+	</tr>
+	{%endif%}
+	{%endfor%}
+</table>
+{% endblock %}

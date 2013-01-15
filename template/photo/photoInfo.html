@@ -1,0 +1,199 @@
+﻿{% extends "template/basepage.html" %}
+{% block js %}
+<!--xieyingan加进去的代码-->
+<script language="javascript">
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+	var inputs=tds[j].childNodes;
+	for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+	  if (inputs[i].type == "radio")
+	  {
+	    inputs[i].checked = !inputs[i].checked;
+	  }
+	}
+  }
+}
+</script>
+<script for = btnSee event=onclick>
+	var value="";
+	if (!box.length) {
+		if (box.checked) {
+			value = box.value; //值的拼凑 .. 具体处理看你的需要
+		}
+	}
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要,
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+	window.location.href="/show/" + value;
+   }
+</script>
+<script for = btnDel event=onclick>////删除图片
+   var value="";
+   if (!box.length) {
+   	if (box.checked) {
+   		value = box.value; //值的拼凑 .. 具体处理看你的需要
+				}
+			}
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value + " "; //值的拼凑 .. 具体处理看你的需要,
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+	if(window.confirm("你确认要删除吗？"))
+   	window.location.href="/admin/delInfo/" + value;		//不改变图库状态的删除
+	//window.location.href="/admin/delid/" + value;   	//改变图库状态的删除
+   }
+</script>
+<script for = btnExit event=onclick>////编辑图片
+   var value="";
+   var index="";
+   if (!box.length) {
+   	if (box.checked) {
+   		value = box.value; //值的拼凑 .. 具体处理看你的需要
+					index = rindex.value;
+				}
+			}
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要,
+		index=index+rindex[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+   window.location.href="/admin/update?image_id=" + value + "&page_id="+index;
+   }
+</script>
+<script language="javascript"><!-- 改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+
+</script>
+<!--xieyingan加进去的代码END-->
+ <script type="text/javascript" language="javascript">
+    for (i=0;i<TableNew.rows.length;i++) 
+    {
+        if(i%2==0)
+        {
+            TableNew.rows(i).className = "a1";
+        }
+        else
+        {
+            TableNew.rows(i).className = "";
+        }
+}
+function aaa()
+{
+	var table = document.getElementById("TableNew");
+	var trNo = table.rows.length;
+	for (i=1;i<table.rows.length;i++){
+		var str = table.rows[i].cells[1].innerHTML;
+		var cd=str.length;
+		if(cd>12){
+			table.rows[i].cells[1].innerHTML=str.substring(0,7)+"...";
+		}
+	}
+}
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body onload="aaa();"  style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a href="/photoInfo/0">图片信息表 </a> >><a href="/photoUpload" title="上传图片">上传图片</a> >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form  method="post" action="/photoInfoList/0" >
+
+<center>
+<table align="center"  border="0"  cellpadding="0" cellspacing="0">
+<tr class="STYLE1">
+<td>类型:</td>
+<td><input id="radio1" name="radio" value="imageId" type="radio" {% ifnotequal radio 'imageName' %}checked {%endifnotequal%}>图片编号</td>
+<td><input id="radio2" name="radio" type="radio" value="imageName" {% ifequal radio 'imageName' %}checked {%endifequal%}>文件名</td>
+<td><select name="findDegree">
+    <option value="1" {% ifequal findDegree '1' %}selected="selected" {%endifequal%}>精确查找</option>
+    <option value="2" {% ifequal findDegree '2' %}selected="selected" {%endifequal%}>模糊查找</option>
+  </select>
+</td>
+<td>
+&nbsp;<input  name="searchType" type="text" value="{{searchType}}"/>
+ <input type="submit" name="search" value="搜索"/>
+ </td>
+ </tr>
+ </table>
+</center>
+</form>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+<tr  class="STYLE1">
+	<td colspan="9" align="right">
+		  <input type="button" name="btnSee" value="查 看"/>
+  <input type="button" name="btnExit" value="编 辑"/>
+  <input type="button" name="btnDel" value="删 除"/>
+	</td>
+</tr>
+	<tr  class="STYLE1">
+		<td align="center">编号</td>
+        <td align="center">图片名</td>
+        <td align="center">缩略图</td>
+		<td align="center">图片大小</td>
+		<td align="center">上传日期</td>
+		<td align="center">描述</td>
+		<td align="center">分辨率</td>
+		<td align="center">文件类型</td>
+		<td align="center"></td>
+	</tr>
+	{% for image in images %}
+	<tr class="STYLE1" style="cursor:hand" onClick="SelectTR(this)">
+		<td align="center">{{ image.photoCode}}</td>
+		<td>{{ image.name}}</td>
+		<td align="center"><img src="/images/{{ image.photoCode}}" width="50" height="30" alt="{{ image.name}}" /></td>
+		<td align="center">{{ image.size}}KB</td>
+		<td align="center">{{ image.date|date:"Y-m-d H:i:s"}}</td>
+		<td>{{ image.description}}</td>
+		<td align="center">{{ image.width}}*{{ image.height}}</td>
+		<td align="center">{{ image.filetype}}</td>
+        <td align="center"><input name="cbox" type="radio" id="box"  value="{{image.id}}" >
+        	<input name="radio" type="radio" id="rindex"  value="{{index}}" style="display:none; visibility:hidden" >
+        </td>
+	</tr>
+	{% endfor %}
+	<tr  class="STYLE1">
+		<td colspan="9" align="right">
+			{% if prev %}<a href="/photoInfoList{{prev}}">上一页</a>{% endif%}  {%if next%}<a href="/photoInfoList{{next}}">下一页</a>{% endif %}
+		</td>
+	</tr>
+</table>
+{% endblock %}

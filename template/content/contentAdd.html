@@ -1,0 +1,79 @@
+{% extends "template/basepage.html" %}
+{% block navigator %}
+<a  href="/contentList/0">资讯内容管理</a> 
+ >> <a href="#">添加资讯</a> >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form action="/contentAdd" method="post">
+ <input type="hidden" name="page_Id" value="{{page}}"/>    
+<table width="90%" cellpadding="1" cellspacing="1" border="0" bgcolor="#D5E3E6">
+  <tr  bgcolor="#ffffff">
+    <td style="padding-left:5px;" >主编码:</td>
+  </tr>
+  <tr  bgcolor="#ffffff">
+    <td>
+      <input type="text" name="maincode" value="{{maincode}}" style="width:500px;"/>    </td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td style="padding-left:5px;" >编码:</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td>
+	  <input type="text" name="code"  value="{{newAddCode}}"  style="width:500px;"/>	</td>
+  </tr>
+
+  <tr bgcolor="#ffffff" >
+    <td style="padding-left:5px;" >资讯标题:</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td>
+	  <input type="text" name="title"  style="width:500px;"/>	</td>
+  </tr>
+    
+  <tr bgcolor="#ffffff" >
+    <td  style="padding-left:5px;" >内容:</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td>
+	  <textarea name="content"  style="width:500px;" rows="5"></textarea>	</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td style="padding-left:5px;" >父级编码:</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td>
+	  <input type="text" name="father" value="{{father}}"  style="width:500px;"/>
+	  (*当父级编码为空时,级别为0)</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td style="padding-left:5px;" >更新时间间隔:</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td> <input type="text" name="updateSpanTime" value="100"  style="width:500px;"/></td>
+  </tr>
+    {% if isReply == 'True'%}
+  <tr bgcolor="#ffffff" >
+    <td style="padding-left:5px;" >回复类型:</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td> <input type="text" name="replyType" style="width:500px;" >1.单选项。2.多选项。3.图文显示。4.文本回复</td>
+  </tr>
+    {% endif%}
+  <tr bgcolor="#ffffff" >
+    <td style="padding-left:5px;" >私有属性:</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td> <input type="text" name="userName" style="width:500px;" >用户名</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td>&nbsp;</td>
+  </tr>
+  <tr bgcolor="#ffffff" >
+    <td  align="left"  style="padding-left:25px;" >
+      <input type="submit" name="Submit" value="确定"/>
+	  <input type="reset" name="Reset" value="重置"/>
+	  <input type="button" name="Return" value="返回" onClick="javascript:history.back(-1);" />    </td>
+  </tr>
+</table>
+</form>
+{% endblock %}

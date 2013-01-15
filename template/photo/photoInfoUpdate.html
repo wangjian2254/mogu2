@@ -1,0 +1,71 @@
+﻿{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" src="/static/main.js"></script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a href="/photoInfo/0">图片信息表 </a> >><a href="/photoUpload" title="上传图片">上传图片</a>{% endblock %} >> <a href="javascript:history.back(-1);">后退</a>
+{% block content %}
+<table align="center" width="90%" border="0" cellpadding=0 cellspacing=0  >
+  <tr >
+    <td valign="top" width="60%" >
+{% if image %}
+<div id="showimg">
+<a href="/images/{{image.id}}" target="_black">
+<img  src="/images/{{image.id}}" alt="{{image.name}}" border="0" /></a>
+</td>
+<td>
+<dl>
+<form method="post" action="/admin/update?image_id={{image.id}}&page_id={{index}}">
+<table width="407" border="0" >
+<tr class="STYLE1">
+<td colspan="2">&nbsp;<strong>图片信息</strong></td>
+</tr>
+<tr class="STYLE1">
+<td>
+  <div align="right">文件名:</div></td><td width="262"><input name="imageName" type="text"  value="{{image.name}}"/></td>
+</tr>
+<tr class="STYLE1">
+<td>
+  <div align="right">文件类型:</div></td><td>{{image.filetype}}&nbsp;</td>
+</tr>
+<tr class="STYLE1">
+<td>
+  <div align="right">分辨率:</div></td><td>{{image.width}}*{{image.height}}&nbsp;</td>
+</tr>
+<tr class="STYLE1">
+<td>
+  <div align="right">图片大小:</div></td><td>{{image.size|filesizeformat}}&nbsp;</td>
+</tr>
+<tr class="STYLE1">
+<td>
+  <div align="right">上传时间:</div></td><td>{{image.date|date:"Y-m-d H:i:s"}}&nbsp;</td>
+</tr>
+<tr class="STYLE1">
+<td valign="top">
+  <div align="right">文件描述:</div></td><td><textarea cols="35" rows="5"  name="description">{{image.description}}</textarea>&nbsp;</td>
+</tr>
+<tr class="STYLE1">
+<td colspan="2" align="center">
+<input name="submit" type="submit"  value="确定"/>&nbsp;
+<input name="reset" type="reset" value="重置"/>&nbsp;
+<input name="return" type="button" value="取消" onClick="javasript:history.back(-1);"/></td>
+</tr>
+</table>
+</form>
+</dl>
+</div>
+{% endif %}
+    </td>
+    </tr>
+  </table>
+  
+{% endblock %}

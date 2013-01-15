@@ -1,0 +1,273 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" language="javascript">
+<!--
+var formSubmit = function(obj){
+    	var formObj = obj.parentNode;
+    	while(formObj.nodeName.toLowerCase() != "form"){
+        	formObj = formObj.parentNode;
+    	}
+    	formObj.submit();
+	}
+-->
+</script>
+<script language="javascript"><!-- 改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+
+</script>
+<script type="text/javascript" language="javascript">
+    for (i=0;i<TableNew.rows.length;i++) 
+    {
+        if(i%2==0)
+        {
+            TableNew.rows(i).className = "a1";
+        }
+        else
+        {
+            TableNew.rows(i).className = "";
+        }
+}
+</script>
+<script type="text/javascript">////实现分页功能
+function aaa(){
+  var theUL = document.getElementById("TableNew");   
+  var totalPage = document.getElementById("spanTotalPage"); 
+  var pageNum = document.getElementById("spanPageNum");       //获取当前页<span>
+  var spanPre = document.getElementById("spanPre");   //获取上一页<span>
+  var spanNext = document.getElementById("spanNext");   //获取下一页<span>
+  var spanFirst = document.getElementById("spanFirst");  //获取第一页<span>
+  var spanLast = document.getElementById("spanLast");   //获取最后一页<span>
+  var numberRowsInTable = theUL.getElementsByTagName("tr").length;    //记录总条数
+  var pageSize = 20;           //每页显示的记录条数 
+  var page = 1;            //当前页，默认第一页
+  hide(); 
+ }   
+  //下一页    
+  function next(){    
+   hideTable();   
+   currentRow = pageSize * page;    
+   maxRow = currentRow + pageSize;    
+   if ( maxRow > numberRowsInTable ) maxRow = numberRowsInTable;    
+   for ( var i = currentRow; i< maxRow; i++ ){    
+ theUL.getElementsByTagName("tr")[i].style.display = '';    
+   }    
+   page++;    
+   if ( maxRow == numberRowsInTable ) {
+    nextText();
+    lastText(); 
+   }    
+   showPage();    
+   preLink();    
+   firstLink();    
+  }    
+     
+  //上一页    
+ function pre(){       
+  hideTable();    
+  page--;      
+  currentRow = pageSize * page;    
+  maxRow = currentRow - pageSize;    
+  if ( currentRow > numberRowsInTable ) currentRow = numberRowsInTable;    
+  for ( var i = maxRow; i< currentRow; i++ ){    
+theUL.getElementsByTagName("tr")[i].style.display = '';    
+
+  }         
+  if ( maxRow == 0 ){
+   preText(); 
+   firstText(); 
+  }    
+  showPage();    
+  nextLink();    
+  lastLink();    
+ }    
+    
+ //第一页    
+ function first(){    
+  hideTable();    
+  page = 1;    
+  for ( var i = 0; i<pageSize; i++ ){    
+theUL.getElementsByTagName("tr")[i].style.display = '';    
+  } 
+  showPage();      
+  firstText();
+  preText();    
+  nextLink();    
+  lastLink();    
+ }    
+    
+ //最后一页    
+ function last(){    
+  hideTable();    
+  page = pageCount();    
+  currentRow = pageSize * (page - 1);    
+  for ( var i = currentRow; i<numberRowsInTable; i++ ){    
+theUL.getElementsByTagName("tr")[i].style.display = '';    
+  }    
+  showPage();            
+  preLink();    
+  nextText();    
+  firstLink(); 
+  lastText();
+ }    
+    
+ function hideTable(){    
+  for ( var i = 0; i<numberRowsInTable; i++ ){    
+theUL.getElementsByTagName("tr")[i].style.display = 'none';    
+  }    
+ }    
+    
+function showPage(){    
+  pageNum.innerHTML = page;     
+ }    
+   
+ //总共页数    
+ function pageCount(){      
+  return Math.ceil(numberRowsInTable/pageSize);    
+ } 
+ //显示链接    
+ function preLink(){ 
+  spanPre.innerHTML = "<a href='javascript:pre();'>上一页</a>"; 
+ }    
+ function preText(){ 
+  spanPre.innerHTML = "上一页"; 
+}    
+ function nextLink(){ 
+  spanNext.innerHTML = "<a href='javascript:next();'>下一页</a>";
+ }    
+ function nextText(){
+  spanNext.innerHTML = "下一页";
+ }       
+ function firstLink(){ 
+  spanFirst.innerHTML = "<a href='javascript:first();'>首页</a>";
+ }    
+function firstText(){ 
+  spanFirst.innerHTML = "首页";
+ }       
+ function lastLink(){ 
+  spanLast.innerHTML = "<a href='javascript:last();'>末页</a>";
+ }    
+function lastText(){ 
+  spanLast.innerHTML = "末页"; 
+ }    
+    
+ //隐藏  
+ function hide(){    
+  for ( var i = pageSize; i<numberRowsInTable; i++ ){    
+theUL.getElementsByTagName("tr")[i].style.display = 'none';    
+  }            
+  totalPage.innerHTML = pageCount();  
+  pageNum.innerHTML = '1';            
+  nextLink();    
+  lastLink();    
+ }       
+</script> 
+ 
+<script for = btnUpdate event=onclick>
+    if(!subform.length){
+       if(subform.checked){
+        var s=document.getElementById(subform.value).submit(); 
+        }
+         }
+    for(var i=0;i<subform.length;i++){
+           if(subform[i].checked){ //判断复选框是否选中
+        var s=document.getElementById(subform[i].value).submit(); 
+     }             
+          
+          }
+</script> 
+<script language="javascript">
+///通过单击行反选该行所有CheckBox
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+    var inputs=tds[j].childNodes;
+    for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+      if (inputs[i].type == "radio")
+        {
+          inputs[i].checked = !inputs[i].checked;
+          //tr.style.backgroundColor = inputs[i].checked ? "#245EDC" : ""; //改变选中行的背景色
+      }
+    }
+  }
+}
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body onload="aaa();"  style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/photoLibList">图库管理</a> 
+ >> 图库名:{{photoLibName}} >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form  method="get" action="/addPhotoToLib">
+<table  width="100%" border="0"  cellpadding="0" cellspacing="0" style="border-collapse:collapse" >
+  <tr class="STYLE1">
+  	<td width="20%" style="text-align:left">	</td>
+	<td width="7%" align="right">类型:</td>
+	<td width="9%"><input id="radio1" name="radio" value="imageId" type="radio" {%ifnotequal radio 'imageName'%} checked{%endifnotequal%} >图片编号</td>
+	<td width="9%"><input id="radio2" name="radio" type="radio" value="imageName" {%ifequal radio 'imageName'%} checked{%endifequal%} >图片名</td>
+    <td width="52%" align="left" style="text-align:left">图片名:
+	<input  name="searchType" type="text" value="{{searchType}}"/>
+	<input  name="photoLibCode" type="hidden" value="{{photoLibCode}}"/>
+	<input  name="photoLibName" type="hidden" value="{{photoLibName}}"/>
+    <input type="submit" name="submit" value="搜索"/>
+	</td>
+  </tr>
+</table>
+</form>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+	<form id="{{image.photoCode}}" method="post" action="/addPhotoToLib">
+	<tr class="STYLE1">
+        <td align="right" colspan="5"><input type="hidden" name="photoLibName" value="{{photoLibName}}"><input type="submit" value="添加" /></td>
+	</tr>
+	<tr class="STYLE1">
+        <td align="center">图片编号</td>
+		<td align="center">图片名</td>
+		<td align="center">缩略图</td>
+		<td align="center">图片类型</td>
+		<td align="center" with="20px;"></td>
+	</tr>
+	{% for image in images %}
+	{% if image.photoCode %}
+	<tr class="STYLE1" onClick="SelectTR(this)">
+		<td align="center">{{image.photoCode}}<input name="photoCode" type="radio" style="visibility:hidden; display:none" value="{{image.photoCode}}"></td>
+		<td align="center">{{image.name}}</td>
+		<td align="center"><img src="/images/{{ image.photoCode}}" width="50" height="30" alt="{{ image.name}}" /></td>
+		<td align="center">{{image.filetype}}</td>
+		<td align="center"><input name="photoLibCode" type="radio" style="visibility:hidden; display:none" value="{{photoLibCode}}"><input name="photoLibName" style="visibility:hidden; display:none" type="radio" value="{{photoLibName}}"><input type="radio" name="subform" id="subform" value="{{image.photoCode}}"/></td>
+	</tr>
+	{%endif%}
+	{%endfor%}
+	</form>
+</table>
+<!--<div class="clear">&nbsp;</div>
+ <div id="pages">  <span id="spanFirst">首页</span> <span id="spanPre">上一页</span> <span id="spanNext">下一页</span> <span id="spanLast">尾页</span> 第<strong id="spanPageNum"></strong>页/共<strong id="spanTotalPage"></strong>页   </div>
+-->
+<script>
+	aaa();
+</script>
+{% endblock %}

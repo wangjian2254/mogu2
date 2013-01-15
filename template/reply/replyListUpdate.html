@@ -1,0 +1,78 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" language="javascript">
+<!--
+var formSubmit = function(obj){
+    	var formObj = obj.parentNode;
+    	while(formObj.nodeName.toLowerCase() != "form"){
+        	formObj = formObj.parentNode;
+    	}
+    	formObj.submit();
+	}
+-->
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body   style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/userReplyList/0">客户端返回信息管理</a> 
+ >> <a href="#">修改回复</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form  method="post" action="/userReplyUpdate">
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+  {%for reply in replys %}
+	 {% if reply.userName %}
+       <tr class="STYLE1">
+         <td width="24%"><div align="right">用户名:&nbsp;</div></td>
+         <td width="76%"><input name="userName" type="text" value="{{reply.userName}}" readonly="yes"></td>
+       </tr>
+       <tr class="STYLE1">
+         <td><div align="right">资讯主编号：</div></td>
+         <td><!--<select name="maincode">
+           <option value="{{reply.maincode}}">{{reply.maincode}}</option>
+         </select>-->
+         <input type="text" name="maincode" value="{{reply.maincode}}" readonly >
+         </td>
+       </tr>
+       <tr class="STYLE1">
+         <td><div align="right">内容编号：</div></td>
+         <td><input type="text" name="code" value="{{reply.code}}" readonly="yes"></td>
+       </tr>
+	   <tr class="STYLE1">
+         <td><div align="right">回复类型：</div></td>
+         <td><select name="replyType">
+		 <option value="1" {%ifequal reply.replyType '1'%} selected {%endifequal%}>单选项</option>
+		 <option value="2" {%ifequal reply.replyType '2'%} selected {%endifequal%}>多选项</option>
+		 <option value="3" {%ifequal reply.replyType '3'%} selected {%endifequal%}>图文显示</option>
+         <option value="4" {%ifequal reply.replyType '4'%} selected {%endifequal%}>文本回复</option>
+         </select>         
+		 </td>
+       </tr>
+       <tr class="STYLE1">
+         <td valign="top"><div align="right">内容：</div></td>
+         <td><textarea name="replyContent" cols="40" rows="6">{{reply.replyContent}}</textarea></td>
+       </tr>
+       <tr class="STYLE1">
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+       </tr>
+	   <tr class="STYLE1">
+         <td colspan="2" align="center">
+         <input name="id" type="hidden" value="{{reply.key.id}}">
+		 <input name="submit" type="submit" value="确定">
+		 <input name="reset" type="reset" value="重置">
+		 <input name="button" type="button" value="返回" onClick="javascript:history.back(-1);"></td>
+         </tr>
+		 {% endif%}
+		 {% endfor %}
+</table>
+</form>
+{% endblock %}

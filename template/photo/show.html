@@ -1,0 +1,35 @@
+﻿{% extends "template/basepage.html" %}
+{% block js %}
+
+{% endblock %}
+{% block body %}
+<body style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a href="/photoInfo/0">图片信息表 </a> >><a href="/photoUpload" title="上传图片">上传图片</a>{% endblock %} >> <a href="javascript:history.back(-1);">后退</a>
+{% block content %}
+<table align="center" width="90%" border="0" cellpadding=0 cellspacing=0  >
+  <tr >
+    <td valign="top"  width="60%" >
+{% if image %}
+<div id="showimg">
+<a href="/images/{{image.id}}" target="_black">
+<img  src="/images/{{image.id}}" alt="{{image.name}}" border="0" /></a>
+</div>
+{% endif %}
+    </td>
+	<td>
+		<dl style="text-align:left">
+<dt><strong>图片信息</strong></dt>
+<dd>文件名:{{image.name}}</dd>
+<dd>文件类型:{{image.filetype}}</dd>
+<dd>分辨率:{{image.width}}*{{image.height}}</dd>
+<dd>图片大小:{{image.size|filesizeformat}}</dd>
+<dd>上传时间:{{image.date|date:"Y-m-d H:i:s"}}</dd>
+<dd><a href="/downLoad?image_id={{image.id}}">下载</a>&nbsp;<a href="/admin/delid/{{image.id}}">删除</a></dd>
+</dl>
+    </td>
+    </tr>
+  </table>
+  
+{% endblock %}

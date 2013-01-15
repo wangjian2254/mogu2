@@ -1,0 +1,84 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" language="javascript">
+<!--
+var formSubmit = function(obj){
+    	var formObj = obj.parentNode;
+    	while(formObj.nodeName.toLowerCase() != "form"){
+        	formObj = formObj.parentNode;
+    	}
+    	formObj.submit();
+	}
+-->
+</script>
+<script language="javascript"><!-- 改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+
+</script>
+ 
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body    style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/contentList/0">资讯内容管理</a> 
+ >> <a href="#">用户订阅信息</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+	<tr class="STYLE1">
+	<td colspan="5" >
+    	<div style="float:right;" >
+    	<input name="return" type="button" value="返回" onClick="javascript:history.back(-1);" >
+        </div>
+    </td>
+</tr>
+	<tr class="STYLE1">
+	<td align="center" >用户名</td>
+	<td align="center" >主编号</td>
+	<td align="center" >当前编号</td>
+	<td align="center" >订阅类型</td>
+	<td align="center" >订阅资讯</td>
+	</tr>
+	{%for content in contents%}
+	{%if content.code%}
+	<form id="{{content.code}}" method="post" action="/subscribeOtherAdd">
+	<tr class="STYLE1">
+	<td align="center" >{{userName}}<input type="hidden" name="userName" value="{{userName}}"></td>
+	<td align="center" >{{content.maincode}}<input type="hidden" name="maincode" value="{{content.maincode}}"></td>
+	<td align="center" >{{content.code}}<input type="hidden" name="code" value="{{content.code}}">
+	<input type="hidden" name="father" value="{{content.father}}">
+	<input type="hidden" name="level" value="{{content.level}}"></td>
+	<td align="center" ><select name="subscribeType">
+			<option value="0">下面的全要</option>
+			<option value="1">下面的另外订阅</option>
+		</select>
+	</td>
+	<td align="center" ><input type="button" onClick="formSubmit(this);" value="确定"></td>
+	</tr>
+	</form>
+	{%endif%}
+	{%endfor%}
+</table>
+{% endblock %}

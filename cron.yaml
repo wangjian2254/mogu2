@@ -1,0 +1,8 @@
+cron:
+- description: delete Content
+  url: /DeleteContentTimeOut
+  schedule: every 24 hours
+
+
+
+

@@ -1,0 +1,145 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script language="javascript"><!-- 改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+
+</script>
+<script language="javascript">
+///通过单击行反选该行所有CheckBox
+function SelectTR(tr)
+{
+  var tds=tr.childNodes;
+  for(var j=0; j<tds.length;j++)
+  {
+	var inputs=tds[j].childNodes;
+	for (var i=0; i < inputs.length; i++) // 遍历页面上所有的 input
+    {
+	  if (inputs[i].type == "radio")
+		{
+		  inputs[i].checked = !inputs[i].checked;
+		  //tr.style.backgroundColor = inputs[i].checked ? "#245EDC" : ""; //改变选中行的背景色
+	  }
+	}
+  }
+}
+</script>
+<script for = btnAdd event=onclick>////增加
+   var value="";
+   var maincode="";
+   if(!box.length){
+    	value=value+box.value; //值的拼凑 .. 具体处理看你的需要
+		maincode=maincode+main.value;
+   }
+   for (var i=0;i<subtype.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要
+		maincode=maincode+main[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+	if(window.confirm("你确认要删除吗？"))
+   	window.location.href="/subscribeOtherDelete?userName={{userName}}&maincode="+maincode+"&code="+value;
+   }
+</script>
+<script for = btnDel event=onclick>////删除
+   var value="";
+   var maincode="";
+   if(!box.length){
+    	value=value+box.value; //值的拼凑 .. 具体处理看你的需要
+		maincode=maincode+main.value;
+   }
+   for (var i=0;i<box.length;i++ ){
+     if(box[i].checked){ //判断复选框是否选中
+    	value=value+box[i].value; //值的拼凑 .. 具体处理看你的需要
+		maincode=maincode+main[i].value;
+	 }
+   }
+   if(value==null||value==""){
+   	alert("请选择一条数据进行操作");
+   }else{
+	if(window.confirm("你确认要删除吗？"))
+   	window.location.href="/subscribeOtherDelete?userName={{userName}}&maincode="+maincode+"&code="+value;
+   }
+</script>
+
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body    style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/contentList/0">资讯内容管理</a> 
+ >> <a href="#">用户订阅信息</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<!--<a href="/subscribeOtherAdd?userName={{subscribeOther.userName}}&maincode={{subscribeOther.code}}">另外订阅</a>-->
+
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+	<from>
+	<tr class="STYLE1">
+	<td colspan="8" ><h5 align="left" style="float:left;">用户 {{userName}}   第{{level}}层订阅</h5>
+	
+    	<div style="float:right;" >
+    	<input type="button" value="添加订阅" onclick="javascript:window.location.href='userSubscribeAdd?userName={{userName}}&father={{father}}'"/>
+    	<input type="button" name="btnDel" value="删除">
+    	<input name="return" type="button" value="返回" onClick="javascript:history.back(-1);" >
+        </div>
+    </td>
+</tr>
+	<tr class="STYLE1">
+		<td align="center" >用户</td>
+        <td align="center" >主编号</td>
+		<td align="center" >内容编号</td>
+		<td align="center" >父类编号</td>
+		<td align="center" >资讯级别</td>
+		<td align="center" >订阅类别</td>
+		<td align="center" with="30" ></td>
+	</tr>
+	{% for subscribeOther in subscribeOthers%}
+	<tr class="STYLE1" style="cursor:hand" onclick= "SelectTR(this);">
+		<td  align="center" >{{userName}}</td>
+        <td align="center" >{{subscribeOther.maincode}}</td>
+		<td align="center" >
+		{%ifequal subscribeOther.subscribeType '0'%}
+		{{subscribeOther.code}}
+		{%else%}
+		<a href="/subscribeOtherList?userName={{subscribeOther.userName}}&father={{subscribeOther.code}}&level={{subscribeOther.level}}">{{subscribeOther.code}}</a>
+		{%endifequal%}
+		</td>
+		<td align="center" >{{subscribeOther.father}}</td>
+		<td align="center" >{{subscribeOther.level}}</td>
+		{%ifequal subscribeOther.subscribeType '0'%}
+		<td align="center" >全要</td>
+		{%else%}
+		<td align="center" >只要本层</td>
+		{%endifequal%}
+		<td>
+		<input type="radio" name="maincode" id="main" value="{{subscribeOther.maincode}}">
+		<input type="radio" name="code"  style="visibility:hidden; display:none"  id="box" value="{{subscribeOther.code}}">
+		</td>
+	</tr>
+	{%endfor%}
+	</from>
+</table>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" language="javascript">
+<!--
+var formSubmit = function(obj){
+    	var formObj = obj.parentNode;
+    	while(formObj.nodeName.toLowerCase() != "form"){
+        	formObj = formObj.parentNode;
+    	}
+    	formObj.submit();
+	}
+-->
+</script>
+<!--xieyingan加进去的代码-->
+<script language="javascript"> <!--改变单元格背景色 -->
+ function cells_color(){
+	var oColor,td=event.srcElement
+	 if(td.tagName!="TD")
+	   return ;
+	if(event.type=="mouseover"){
+		oColor="#C5D7EF";
+		}
+		
+	 else{ 
+	 	oColor="#ffffff"
+	 }
+	 tr=td.parentElement
+	 for(var i=0;i<tr.cells.length;i++)
+		 tr.cells[i].bgColor=oColor
+ }
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body   style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/photoLibList">图库管理</a> 
+ >> <a href="/user_PhotoLibList">用户图库信息</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form  method="post" action="/user_PhotoLibList">
+<table width="90%" border="0"  cellpadding="0" cellspacing="0" style="border-collapse:collapse">
+  <tr class="STYLE1">
+    <td align="center">用户名:
+	<input  name="searchType" type="text" value="{{searchType}}"/>
+	<input  name="photoLibCode" type="hidden" value=""/>
+	<input  name="photoLibName" type="hidden" value=""/>
+    <input type="submit" name="submit" value="搜索"/>
+	</td>
+  </tr>
+</table>
+</form>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+<tr class="STYLE1">
+    <th rowspan="2" align="center"><div  align="center">用户名</div></th>
+    <th colspan="6" align="center"><div  align="center">图库类型</div></th>
+    <th rowspan="2" align="center"><div  align="center">添加图库</div></th>
+  </tr>
+  <tr class="STYLE1">
+    <th colspan="2" width="19%" align="center"><div  align="center">系统图库</div></th>
+    <th colspan="2" width="19%" align="center"><div align="center">用户图库</div></th>
+    <th colspan="2" width="19%" align="center"><div align="center">临时图库</div></th>
+  </tr>
+  {% for AllUserLib in AllUserLibs %}
+  {% if  AllUserLib %}
+  <form method="get" action="/user_PhotoLibAdd">
+  <tr class="STYLE1" style="cursor:hand" onclick= "window.location.href='/user_PhotoLib_PhotoList?userName={{AllUserLib.0}}'">
+    <td align="center" >{{AllUserLib.0}}<input name="userName" type="hidden" value="{{AllUserLib.0}}"></td>
+    <td  align="center">{{AllUserLib.2}}<input name="sysPhotoLib" type="hidden" value="{{AllUserLib.2}}"></br><font color='#965004'><b>{{AllUserLib.3|date:"Y-m-d H:i:s"}}</b></font></td>
+    <td align="center"  width="7%"><a href="/user_PhotoLibDelete?userName={{AllUserLib.0}}&photoLibType={{AllUserLib.1}}" onClick="confirm('你确认要删除吗？')">删除</a></td>
+    <td  align="center">{{AllUserLib.5}}<input name="userPhotoLib" type="hidden" value="{{AllUserLib.5}}"></br><font color='#965004'><b>{{AllUserLib.6|date:"Y-m-d H:i:s"}}</b></font></td>
+    <td  align="center" width="7%"><a href="/user_PhotoLibDelete?userName={{AllUserLib.0}}&photoLibType={{AllUserLib.4}}" onClick="confirm('你确认要删除吗？')">删除</a></td>
+    <td align="center">{{AllUserLib.8}}<input name="temPhotoLib" type="hidden" value="{{AllUserLib.8}}"></br><font color='#965004'><b>{{AllUserLib.9|date:"Y-m-d H:i:s"}}</b></font></td>
+    <td align="center" width="7%"><a href="/user_PhotoLibDelete?userName={{AllUserLib.0}}&photoLibType={{AllUserLib.7}}" onClick="confirm('你确认要删除吗？')">删除</a></td>
+    <td align="center" >
+      <input type="submit" name="add" value="添加"/>
+    </td>
+  </tr>
+  </form>
+  {%endif%}
+  {%endfor%}
+</table>
+{% endblock %}

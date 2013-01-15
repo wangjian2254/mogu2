@@ -1,0 +1,79 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" language="javascript">
+function aaa()
+{
+	var table = document.getElementById("TableNew");
+	var trNo = table.rows.length;
+	for (i=1;i<table.rows.length;i++){
+		var str = table.rows[i].cells[3].innerHTML;
+		var cd=str.length;
+		if(cd>15){
+			table.rows[i].cells[3].innerHTML=str.substring(0,15)+"...";
+		}
+	}
+}
+
+</script>
+
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body  onLoad="aaa();"   style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/contentList/0">资讯内容管理</a> 
+ >> <a href="#">订阅资讯</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form  method="get" action="/userSubscribeAdd">
+<table align="center" width="90%" border="0"  cellpadding="0" cellspacing="0" >
+  <tr align="center">
+    <td>资讯编号:
+    <input  name="userName" type="hidden" value="{{userName}}"/>
+    <input  name="father" type="hidden" value="{{father}}"/>
+    <input  name="code" type="text" value="{{code}}"/>
+    <input type="submit" name="search" value="搜索"/>
+    </td>
+  </tr>
+</table>
+</form>
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+	<tr class="STYLE1">
+		<td align="right" colspan="6">
+<input name="return" type="button" value="返回" onClick="javascript:history.back(-1);" >		</td>
+	</tr>
+	<tr  class="STYLE1">
+		<td align="center" width="70px">主编号</td>
+		<td align="center" width="70px">内容编号</td>
+		<td align="center" width="200px">标题</td>
+		<td align="center" width="400px">资讯内容</td>
+		<td align="center" width="100px">订阅范围</td>
+		<td align="center" width="60px">用户订阅</td>
+	</tr>
+	{%for content in contents%}
+	<form id="{{content.maincode}}" method="post" action="/subscribeAdd">
+	<tr  onmouseover="cells_color(this,1);" onMouseOut="cells_color(this,2);" bgcolor="#ffffff" >
+		<td align="center">{{content.maincode}}<input name="maincode" type="hidden" value="{{content.maincode}}"></td>
+		<td align="center">{{content.key().name()}}<input name="code" type="hidden" value="{{content.key().name()}}">
+                                            <input name="father" type="hidden" value="{{content.father}}">
+                                            <input name="level" type="hidden" value="{{content.level}}">
+        </td>
+		<td align="center">{{content.title}}</td>
+		<td align="center">{{content.content}}</td>
+		<td align="center"><select name="subscribeType">
+            <option value=""  >尚未订阅</option>
+			<option value="0" {% if userSub.get(content.key().name())=='0' %} selected {%endif%} >下面的全要</option>
+			<option value="1" {% if userSub.get(content.key().name())=='1' %} selected {%endif%} >下面的另外订阅</option>
+		</select></td>
+		<td align="center"><input name="userName" type="hidden" value="{{userName}}"/><input type="submit"  value="确定"></td>
+	</tr>
+	</form>
+	{%endfor%}
+</table>
+{% endblock %}

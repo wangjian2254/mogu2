@@ -1,0 +1,85 @@
+{% extends "template/basepage.html" %}
+{% block js %}
+<script type="text/javascript" language="javascript">
+<!--
+var formSubmit = function(obj){
+		alert(document.getElementById("status").value);
+    	var formObj = obj.parentNode;
+    	while(formObj.nodeName.toLowerCase() != "form"){
+        	formObj = formObj.parentNode;
+    	}
+    	formObj.submit();
+	}
+-->
+</script>
+<script language="javascript">
+window.onload = function val(){
+	var index = document.getElementById("index").value;
+	//alert(index);
+	}
+</script>
+<style type="text/css">
+.STYLE1 {
+	height:25px;
+	background-color:#ffffff;
+}
+</style>
+{% endblock %}
+{% block body %}
+<body   style="background:#ececec">
+{% endblock %}
+{% block navigator %}
+<a  href="/photoLibList">图库管理</a> 
+ >> <a href="#">图片库编辑</a>  >> <a href="javascript:history.back(-1);">后退</a>
+{% endblock %}
+{% block content %}
+<form  method="post" action="/photoLib_PhotoUpdate">
+<table id="TableNew" border="0" width="90%" cellpadding=1 cellspacing=1 bgcolor="#D5E3E6"  onMouseOver="cells_color();" onMouseOut="cells_color();" >
+	 
+	{% for photoLib_Photo in photoLib_Photos %}
+	{% if photoLib_Photo.photoLibCode %}
+       <tr class="STYLE1">
+         <td width="42%"><div align="right">图片库编号:&nbsp;</div></td>
+         <td width="58%"><div align="left">
+           <input name="photoLibCode" type="text" value="{{photoLib_Photo.photoLibCode}}" readonly="yes">
+         </div></td>
+       </tr>
+       <tr class="STYLE1">
+         <td><div align="right">图片编号：</div></td>
+         <td><!--<select name="maincode">
+           <option value="{{reply.maincode}}">{{reply.maincode}}</option>
+         </select>-->
+           <div align="left">
+             <input type="text" name="photoCode" value="{{photoLib_Photo.photoCode}}" readonly >
+           </div></td>
+       </tr>
+       <tr class="STYLE1">
+         <td><div align="right">索引号：</div></td>
+         <td><div align="left">
+           <input type="text" name="indexNo" value="{{photoLib_Photo.indexNo}}" readonly="yes">
+         </div></td>
+       </tr>
+	   <tr class="STYLE1">
+         <td><div align="right">图片状态：</div></td>
+         <td><div align="left">
+           <select name="replyType">
+             <option value="0" {%ifequal photoLib_Photo.status '0'%} selected {%endifequal%}> 已 删 除 </option>
+             <option value="1" {%ifequal photoLib_Photo.status '1'%} selected {%endifequal%}>  增 加  </option>
+           </select>
+         </div></td>
+       </tr>
+       <tr class="STYLE1">
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+       </tr>
+	   <tr class="STYLE1">
+         <td colspan="2" align="center">
+		 <input name="submit" type="submit" value="确定">
+		 <input name="reset" type="reset" value="重置">
+		 <input name="button" type="button" value="返回" onClick="javascript:history.back(-1);"></td>
+         </tr>
+		 {% endif%}
+		 {% endfor %}
+</table>
+</form>
+{% endblock %}

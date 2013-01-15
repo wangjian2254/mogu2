@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        tr{
+            height: 25px;
+        }
+    </style>
+</head>
+<body>
+<center>
+<form action="/login" method="post">
+<table style="margin-top: 200px;width: 500px;">
+    <tr>
+        <td width="100px" height="40px" colspan="2" align="center" style="font-size: 25px;">
+
+管理员登陆界面
+
+        </td>
+    </tr>
+     <tr>
+        <td>
+用户名:
+        </td>
+        <td>
+<input name="username" type="text" style="width: 300px;">
+        </td>
+    </tr>
+     <tr>
+        <td>
+密码:
+        </td>
+        <td>
+<input name="password" type="text" style="width: 300px;">
+        </td>
+    </tr>
+     <tr>
+        <td colspan="2" align="center">
+
+    <input  type="submit" style="width: 60px;" value="登录">
+<input name="fromurl" type="hidden" value="{{fromurl}}">
+        </td>
+    </tr>
+</table>
+    </form>
+    </center>
+</body>
+</html>
